@@ -62,11 +62,6 @@
       "@react-native-firebase/app",
       "@react-native-firebase/dynamic-links"
     ],
-    "extra": {
-      "eas": {
-        "projectId": "c7361804-1b9d-4342-b6b2-e316f75de42d"
-      }
-    },
     "runtimeVersion": {
       "policy": "appVersion"
     }

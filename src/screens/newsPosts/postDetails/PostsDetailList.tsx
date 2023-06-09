@@ -235,12 +235,12 @@ const PostsDetailList = (props: any) => {
           pagingEnabled
           horizontal
           overScrollMode="always"
-          // showsHorizontalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           bounces={false}
           onScroll={onScroll}
           // onScroll={handleFlatListScroll}
           onMomentumScrollBegin={() => {
-            console.log("--Swip--");
+            console.log("--Swipe--");
           }}
           initialScrollIndex={props.route.params.index}
           {...flatListOptimizationProps}

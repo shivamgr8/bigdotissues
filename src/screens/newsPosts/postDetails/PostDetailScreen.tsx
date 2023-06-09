@@ -337,7 +337,12 @@ const PostDetailScreen = (props: any) => {
                 </Text>
               </Text> */}
             <View
-              style={{ width: fw, height: fh, paddingHorizontal: 22 }}
+              style={{
+                width: fw,
+                height: fh,
+                paddingHorizontal: 22,
+                overflow: "hidden",
+              }}
               pointerEvents="box-none"
             >
               <WebView
@@ -512,7 +517,7 @@ const PostDetailScreen = (props: any) => {
                 scrollEnabled
                 showsHorizontalScrollIndicator
                 decelerationRate="normal"
-                nestedScrollEnabled
+                // nestedScrollEnabled
                 contentMode="mobile"
                 // allowsBackForwardNavigationGestures
                 // showsHorizontalScrollIndicator={true}

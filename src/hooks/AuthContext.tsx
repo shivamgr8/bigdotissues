@@ -28,7 +28,7 @@ import {
   handleCategories,
   handleSignOut,
 } from "../utils/utilityFunctions";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+// import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import { AppConsolelog } from "../utils/commonFunctions";
 import emitter from "./emitter";
@@ -116,7 +116,7 @@ export const AuthContextProvider = ({ children }: AuthContextProvider) => {
                 const firebaseAuth = getAuth(app);
                 firebaseAuth.signOut();
                 if (auth().currentUser) {
-                  await GoogleSignin.signOut();
+                  // await GoogleSignin.signOut();
                   await auth().signOut();
                 }
                 emitter.emit("refresh_categories", "callApi");
