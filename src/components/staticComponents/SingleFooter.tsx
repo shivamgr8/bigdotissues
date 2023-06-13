@@ -21,7 +21,6 @@ import {
   pauseAudio,
   resumeAudio,
 } from "../../utils/utilityFunctions";
-import { AuthContext } from "../../hooks/AuthContext";
 import { itemType } from "../../../types";
 import emitter from "../../hooks/emitter";
 import { AppConsolelog } from "../../utils/commonFunctions";
@@ -60,7 +59,6 @@ export default function SingleFooter(props: {
   postDataRef: any;
   myIndex: any;
 }) {
-  const authContext = useContext(AuthContext);
   const dispatch = useDispatch();
   const data = useSelector((state: any) => state.sourceSlice.data);
   const audioState = useSelector((state: any) => state.audioSlice.data);
@@ -122,48 +120,7 @@ export default function SingleFooter(props: {
   }, [props.item.id]);
 
   //----------start: HistoryPosts-------------
-  const storePosts = async (postId: any, item: any) => {
-    try {
-      if (authContext.getUserData === false) {
-        const value: any = await AsyncStorage.getItem("bigdot_localpostids");
-        let parseValue = JSON.parse(value);
-        if (parseValue && parseValue.length) {
-          let updatedData = [...parseValue];
-          if (updatedData.length !== 30) {
-            const index = updatedData.indexOf(postId.toString());
-            if (index !== -1) {
-              updatedData.splice(index, 1);
-            }
-            updatedData.unshift(postId);
-          } else {
-            updatedData.splice(29, 1);
-            const index = updatedData.indexOf(postId.toString());
-            if (index !== -1) {
-              updatedData.splice(index, 1);
-            }
-            updatedData.unshift(postId);
-          }
-          storeAsyncData(updatedData, "localpostids");
-        } else {
-          let updatedData: any = [];
-          updatedData.push(postId);
-          storeAsyncData(updatedData, "localpostids");
-        }
-      } else {
-        try {
-          await api_updateHistoryOnline(
-            authContext.getUserData,
-            postId,
-            "save"
-          );
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    } catch (error) {
-      AppConsolelog("--errorWhileStorePost--", error);
-    }
-  };
+  const storePosts = async (postId: any, item: any) => {};
   //----------end: HistoryPosts-------------
 
   //-----------------------start: audio------------------------
@@ -204,69 +161,8 @@ export default function SingleFooter(props: {
   //-----------------------end: share------------------------
 
   //-----------------------start: bookmark------------------------
-  // const onToggleBookmark = () => {
-  //   if (authContext.getUserData !== false) {
-  //     const temp = [...props.postData];
-  //     if (temp[props.myIndex].is_bookmark === true) {
-  //       temp[props.myIndex].is_bookmark = false;
-  //       api_updateBookmarkOnline(
-  //         authContext.getUserData,
-  //         props.item.id,
-  //         "delete"
-  //       );
-  //       setBookmark(false);
-  //     } else {
-  //       temp[props.myIndex].is_bookmark = true;
-  //       api_updateBookmarkOnline(
-  //         authContext.getUserData,
-  //         props.item.id,
-  //         "save"
-  //       );
-  //       setBookmark(true);
-  //       emitter.emit("alert", `${props.myIndex},${props.item.id},saved`);
-  //     }
-  //     props.postDataRef
-  //       ? (props.postDataRef.current = { postData: temp })
-  //       : null;
-  //     emitter.addListener("undobookmark", (value: any) => {
-  //       console.log("hhhhhhSSSSS", value);
-  //       // const temp = [...props.postData];
-  //       // if (temp[value].is_bookmark === true) {
-  //       //   temp[value].is_bookmark = false;
-  //       //   api_updateBookmarkOnline(authContext.getUserData, value, "delete");
-  //       //   setBookmark(false);
-  //       // }
-  //       // props.postDataRef.current = { postData: temp };
-  //       setBookmark(false);
-  //     });
-  //   } else {
-  //     emitter.emit("alert", "cate_alert");
-  //   }
-  //   setOptions(false);
-  // };
 
-  const onToggleBookmark = () => {
-    if (authContext.getUserData !== false) {
-      const data = onToggleBookMark(
-        props.item.id,
-        props.myIndex,
-        props.postData,
-        authContext.getUserData.uid
-      );
-      props.postDataRef.current = { postData: data };
-      const filterData: any = data.filter((filterItem: any) => {
-        return filterItem.id === props.item.id;
-      });
-      dispatch(updateBookMarkPosts({ payload: filterData, isConcat: true }));
-      if (data[props.myIndex].is_bookmark === true) {
-        return setBookmark(true);
-      }
-      setBookmark(false);
-      return;
-    } else {
-      emitter.emit("alert", "cate_alert");
-    }
-  };
+  const onToggleBookmark = () => {};
   //-----------------------end: bookmark------------------------
 
   //-------------------start: show options-------------
@@ -320,76 +216,7 @@ export default function SingleFooter(props: {
     setOptions(false);
   };
 
-  const handleSourceMute = async () => {
-    setOptions(false);
-    if (authContext.getUserData !== false) {
-      if (data && data.length === 0) {
-        let updatedData: any = [];
-        updatedData.push({ id: props.item.sourceId, undo: false });
-        dispatch(updateSourceSlices(updatedData));
-        const value = {
-          source: props.item.source,
-          id: props.item.sourceId,
-          updatedData: updatedData,
-        };
-        emitter.emit("alert", value);
-      } else if (data && data.length) {
-        let updatedData: any = [...data];
-        const existingIndex = updatedData.findIndex(
-          (item: any) => item.id == props.item.sourceId
-        );
-        if (existingIndex !== -1) {
-          updatedData[existingIndex] = { id: props.item.sourceId, undo: false };
-        } else {
-          updatedData.push({ id: props.item.sourceId, undo: false });
-        }
-        console.log("---updatedData---", updatedData);
-        dispatch(updateSourceSlices(updatedData));
-
-        const value = {
-          source: props.item.source,
-          id: props.item.sourceId,
-          updatedData: updatedData,
-        };
-        emitter.emit("alert", value);
-      }
-      const value = await api_GetSourcePreferences(authContext.getUserData.uid);
-      if (value && value.data && value.data.checked) {
-        console.log("--value--", value);
-        let id_arr = JSON.parse(value.data.checked);
-        if (id_arr && id_arr.length) {
-          const filteredData = id_arr.filter(
-            (value: any) => value != props.item.sourceId
-          );
-          api_SaveSourcePreferences(
-            authContext.getUserData.uid,
-            filteredData
-          ).then((res) => {
-            console.log("--saveresponse----", res);
-            emitter.emit("refreshPost");
-          });
-        }
-      } else {
-        api_getSources().then((response) => {
-          if (response && response.Items && response.Items.length) {
-            const filteredData = response.Items.filter(
-              (value: any) => value.id != props.item.sourceId
-            );
-            api_SaveSourcePreferences(
-              //@ts-ignore
-              authContext.getUserData.uid,
-              filteredData
-            ).then((res) => {
-              console.log("--savereponse----", res);
-              emitter.emit("refreshPost");
-            });
-          }
-        });
-      }
-    } else {
-      emitter.emit("alert", "cate_alert");
-    }
-  };
+  const handleSourceMute = async () => {};
 
   const onPlay = async () => {
     try {

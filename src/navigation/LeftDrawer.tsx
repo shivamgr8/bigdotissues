@@ -25,7 +25,6 @@ import RootNavigator from "./RootNavigator";
 import ImageTabBarIcon from "../components/ImageTabBarIcon";
 import usePrefetchTheme from "../hooks/usePrefetchTheme";
 import { AppConsoleinfo, AppConsolelog } from "../utils/commonFunctions";
-import { AuthContext } from "../hooks/AuthContext";
 import { apiGetRecentCategories } from "../services/network/apiServices";
 import { useSelector } from "react-redux";
 import { isJsonString } from "../utils/utilityFunctions";
@@ -44,7 +43,6 @@ type itemType = {
 
 export default function LeftDrawer() {
   const Drawer = createDrawerNavigator();
-  const authContext = useContext(AuthContext);
   let theme = usePrefetchTheme();
   let colorScheme = useColorScheme();
   if (theme !== "light" && theme !== "dark") {
@@ -124,29 +122,9 @@ export default function LeftDrawer() {
       setRecent([]);
       getRecentCategory();
       return () => {};
-    }, [authContext.getUserData]);
+    }, []);
 
-    const updateRecent = () => {
-      try {
-        if (authContext.getUserData === false) {
-          AsyncStorage.getItem("bigdot_recent_categories").then(
-            (recent_resp: any) => {
-              if (recent_resp != null || recent_resp != undefined) {
-                let recent_arr = JSON.parse(JSON.parse(recent_resp));
-                setRecent(recent_arr.reverse());
-              }
-            }
-          );
-        } else {
-          let newArray = [...onlineRecentCategorydata];
-          if (onlineRecentCategorydata && onlineRecentCategorydata.length) {
-            setRecent(newArray.reverse());
-          }
-        }
-      } catch (error) {
-        AppConsolelog("--error--", error);
-      }
-    };
+    const updateRecent = () => {};
 
     const getCategories = async () => {
       try {
@@ -163,50 +141,7 @@ export default function LeftDrawer() {
       }
     };
 
-    const getRecentCategory = async () => {
-      try {
-        const value: any = await AsyncStorage.getItem("bigdot_categories");
-        if (authContext.getUserData !== false && value) {
-          apiGetRecentCategories(authContext.getUserData.uid).then((res) => {
-            if (res && res.status === "success") {
-              let parseLocalCategory = JSON.parse(JSON.parse(value));
-              let onlineCategory = res?.data;
-              AppConsolelog("--resRecent--", res);
-              if (
-                parseLocalCategory &&
-                onlineCategory &&
-                onlineCategory.length
-              ) {
-                const filterCategory = parseLocalCategory.filter(
-                  (item: catObjType) => item.status === true
-                );
-                const newData = filterCategory.filter((item: any) => {
-                  if (onlineCategory.includes(parseInt(item.id, 10))) {
-                    item.slug = item.title.toLowerCase();
-                    item.count = filterCategory?.length;
-                    item.CateId = item.id;
-                    item.Title = item.title;
-                    delete item.category_image;
-                    delete item.status;
-                    delete item.title;
-                    delete item.id;
-                    delete item.order;
-                    return true;
-                  }
-                });
-                dispatch(updateRecentCategory(newData));
-              } else {
-                let value: any = [];
-                dispatch(updateRecentCategory(value));
-                setRecent([]);
-              }
-            }
-          });
-        }
-      } catch (error) {
-        AppConsolelog("--errorWhileGetRecentCategory--", error);
-      }
-    };
+    const getRecentCategory = async () => {};
 
     return (
       <SafeAreaView>

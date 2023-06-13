@@ -11,7 +11,6 @@ import BreakingNewsStrip from "../../../components/staticComponents/BreakingNews
 import ScreenLoader from "../../../components/staticComponents/ScreenLoader";
 import emitter from "../../../hooks/emitter";
 import Colors from "../../../constants/Colors";
-import { AuthContext } from "../../../hooks/AuthContext";
 import useInternet from "../../../hooks/useInternet";
 import { AppConsolelog } from "../../../utils/commonFunctions";
 import { PostListProps } from "./types";
@@ -20,7 +19,6 @@ import { updateBookMarkPosts } from "../../../services/redux/slices/bookmarksPos
 import { useDispatch } from "react-redux";
 
 const PostsList = (props: PostListProps) => {
-  const authContext = useContext(AuthContext);
   const MyFacebookLoader = () => <ScreenLoader />;
   const listRef = React.useRef<any>(null);
   const dispatch = useDispatch();
@@ -64,7 +62,7 @@ const PostsList = (props: PostListProps) => {
     };
     Dimensions.addEventListener("change", onChange);
     getCachePosts();
-  }, [sw, authContext.getUserData]);
+  }, [sw]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -139,26 +137,7 @@ const PostsList = (props: PostListProps) => {
     }
   };
 
-  const onToggleBookmark = (item: { id: string }, index: number) => {
-    if (authContext.getUserData !== false) {
-      const data = onToggleBookMark(
-        item.id,
-        index,
-        postData,
-        authContext.getUserData.uid
-      );
-      setData(data);
-      const filterData: any = data.filter((filterItem: any) => {
-        AppConsolelog("--itemId--", item.id);
-        return filterItem.id === item.id;
-      });
-      AppConsolelog("--filterData--", filterData);
-      dispatch(updateBookMarkPosts({ payload: filterData, isConcat: true }));
-      return;
-    } else {
-      emitter.emit("alert", "cate_alert");
-    }
-  };
+  const onToggleBookmark = (item: { id: string }, index: number) => {};
 
   const RenderItem = ({ item, index }: any) => {
     return (

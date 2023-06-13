@@ -14,7 +14,6 @@ import PostDetailScreen from "./PostDetailScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SingleFooter from "../../../components/staticComponents/SingleFooter";
 import ScreenLoader from "../../../components/staticComponents/ScreenLoader";
-import { AuthContext } from "../../../hooks/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppConsolelog } from "../../../utils/commonFunctions";
 import {
@@ -32,7 +31,6 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 const PostsDetailList = (props: any) => {
   console.log("PostsDetailList>> Cate ID:" + props.route.params);
-  const authContext = useContext(AuthContext);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const onlineRecentCategorydata = useSelector(
@@ -126,59 +124,6 @@ const PostsDetailList = (props: any) => {
     dispatch(stopAudio());
     navigation.goBack();
     return true;
-  };
-
-  const sveRecentCategory = (categoryId: string) => {
-    try {
-      if (authContext.getUserData === false) {
-        AsyncStorage.getItem("bigdot_categories").then((tResp) => {
-          if (tResp) {
-            let fObj = findInObject(
-              JSON.parse(JSON.parse(tResp)),
-              "id",
-              categoryId
-            );
-            let tParams = {
-              CateId: categoryId,
-              Title: fObj[0]?.title,
-            };
-            saveRecentCategories(tParams);
-          }
-        });
-        return;
-      } else {
-        AsyncStorage.getItem("bigdot_categories").then((tResp) => {
-          if (tResp) {
-            let fObj = findInObject(
-              JSON.parse(JSON.parse(tResp)),
-              "id",
-              categoryId
-            );
-            let tParams = {
-              CateId: categoryId,
-              Title: fObj[0]?.title,
-            };
-            const res = saveOnlineRecentCategories(
-              tParams,
-              onlineRecentCategorydata
-            );
-            dispatch(updateRecentCategory(res));
-            AppConsolelog("--res--", res);
-            AppConsolelog(
-              "--onlineRecentCategorydata--",
-              onlineRecentCategorydata
-            );
-          }
-        });
-        apiSaveRecentCategories(authContext.getUserData.uid, categoryId).then(
-          (res) => {
-            AppConsolelog("--res--", res);
-          }
-        );
-      }
-    } catch (error) {
-      AppConsolelog("--errorWhileSaveRecentCategory--", error);
-    }
   };
 
   const renderItem = useCallback(({ item, index }: any) => {

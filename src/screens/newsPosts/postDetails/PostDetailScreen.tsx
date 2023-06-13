@@ -14,7 +14,6 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AuthContext } from "../../../hooks/AuthContext";
 import { Text, View, HeadingText } from "../../../components/Themed";
 import RenderHtml, {
   HTMLElementModel,
@@ -82,7 +81,6 @@ let fh = Dimensions.get("screen").height;
 let sw = fw - 16;
 
 const PostDetailScreen = (props: any) => {
-  const authContext = useContext(AuthContext);
   const storeSlice: any = useSelector((state: RootState) => state.storeSlice);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -155,32 +153,6 @@ const PostDetailScreen = (props: any) => {
       }
     } catch (error) {
       AppConsolelog("--fetchMoreForYouError---", error);
-    }
-  };
-
-  const onToggleBookmark = (item: { id: string }, index: number) => {
-    if (authContext.getUserData !== false) {
-      const data = onToggleBookMark(
-        item.id,
-        index,
-        postData,
-        authContext.getUserData.uid
-      );
-      setData(data);
-      const filterData: any = data.filter((filterItem: any) => {
-        AppConsolelog("--itemId--", item.id);
-        return filterItem.id === item.id;
-      });
-      AppConsolelog("--filterData--", filterData);
-      dispatch(
-        updateBookMarkPosts({
-          payload: filterData,
-          isConcat: true,
-        })
-      );
-      return;
-    } else {
-      emitter.emit("alert", "cate_alert");
     }
   };
 
@@ -517,7 +489,7 @@ const PostDetailScreen = (props: any) => {
                 scrollEnabled
                 showsHorizontalScrollIndicator
                 decelerationRate="normal"
-                // nestedScrollEnabled
+                nestedScrollEnabled
                 contentMode="mobile"
                 // allowsBackForwardNavigationGestures
                 // showsHorizontalScrollIndicator={true}

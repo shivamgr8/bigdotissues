@@ -13,7 +13,6 @@ import {
 } from "../services/network/apiServices";
 import { authUserType, catObjType, itemType } from "../../types";
 import emitter from "../hooks/emitter";
-import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { AppConsolelog } from "./commonFunctions";
 
 //----- start: bookmark actions --------
@@ -294,30 +293,7 @@ export const onShare = async (title: string, postId: string) => {
     console.log(error.message);
   }
 };
-export const onShareHandler = async (item: any) => {
-  const link = await dynamicLinks().buildShortLink(
-    {
-      link: `https://bigdot.news/${item?.itemId}`,
-      domainUriPrefix: "https://bigdot.page.link",
-      android: {
-        packageName: "com.v2.bigdot",
-        fallbackUrl:
-          "https://play.google.com/store/apps/details?id=com.instagram.android",
-      },
-      social: {
-        title: item?.itemTitle,
-        descriptionText: item?.itemDescription,
-        imageUrl: item?.itemImage,
-      },
-      otherPlatform: {
-        fallbackUrl:
-          "https://play.google.com/store/apps/details?id=com.instagram.android",
-      },
-    },
-    dynamicLinks.ShortLinkType.UNGUESSABLE
-  );
-  return link;
-};
+export const onShareHandler = async (item: any) => {};
 //-----------------------end: share------------------------
 
 //-----------------------start: getCategories--------------

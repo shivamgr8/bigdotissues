@@ -14,7 +14,6 @@ import { useNavigation } from "@react-navigation/native";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
 import ImageTabBarIcon from "./ImageTabBarIcon";
-import { AuthContext } from "../hooks/AuthContext";
 import { itemType } from "../../types";
 import emitter from "../hooks/emitter";
 import TrendingBreakingTag from "../components/staticComponents/TrendingBreakingTag";
@@ -45,7 +44,6 @@ interface PostsCardProps {
 }
 
 const PostsCard = (props: PostsCardProps) => {
-  const authContext = useContext(AuthContext);
   const navigation = useNavigation<any>();
   const dispatch = useDispatch();
   const colorScheme = useColorScheme();
@@ -58,61 +56,6 @@ const PostsCard = (props: PostsCardProps) => {
   const animatedButtonScale = new Animated.Value(1);
 
   //-----------------------start: bookmark------------------------
-
-  // const onToggleBookmark = () => {
-  //   if (authContext.getUserData !== false) {
-  //     try {
-  //       const temp = [...props.postdata];
-  //       if (temp[props.myindex].is_bookmark === true) {
-  //         temp[props.myindex].is_bookmark = false;
-  //         api_updateBookmarkOnline(
-  //           authContext.getUserData,
-  //           props.item.id,
-  //           "delete"
-  //         );
-  //       } else {
-  //         temp[props.myindex].is_bookmark = true;
-  //         api_updateBookmarkOnline(
-  //           authContext.getUserData,
-  //           props.item.id,
-  //           "save"
-  //         ).then((res) => {
-  //           if (res && res.status === "success") {
-  //             emitter.emit("alert", `${props.myindex},${props.item.id},saved`);
-  //           }
-  //         });
-  //       }
-  //       props.setData(temp);
-  //       emitter.addListener("undobookmark", (eventData: string) => {
-  //         try {
-  //           console.log("hhhhhh", eventData);
-  //           const temp = [...props.postdata];
-  //           if (
-  //             temp[parseInt(eventData?.split(",")[0], 10)].is_bookmark === true
-  //           ) {
-  //             temp[parseInt(eventData?.split(",")[0], 10)].is_bookmark = false;
-  //             AppConsolelog(
-  //               "--temp[eventData].id--",
-  //               temp[parseInt(eventData?.split(",")[0], 10)].id
-  //             );
-  //             api_updateBookmarkOnline(
-  //               authContext.getUserData,
-  //               eventData?.split(",")[1],
-  //               "delete"
-  //             );
-  //           }
-  //           props.setData(temp);
-  //         } catch (error) {
-  //           AppConsolelog("--errorWhileUndoSave--", error);
-  //         }
-  //       });
-  //     } catch (error) {
-  //       AppConsolelog("---errorWhileSavePost--", error);
-  //     }
-  //   } else {
-  //     emitter.emit("alert", "cate_alert");
-  //   }
-  // };
 
   // Initial scale value of 1 means no scale applied initially.
   // When button is pressed in, animate the scale to 1.5

@@ -11,8 +11,6 @@ import { PrefetchContextProvider } from "./src/hooks/PrefetchContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { storeAsyncData } from "./src/hooks/asyncStorage";
 import BigdotAlerts from "./src/components/BigdotAlerts";
-import { AuthContextProvider } from "./src/hooks/AuthContext";
-import { AuthDetailsContextProvider } from "./src/hooks/AuthDetailsContext";
 import { store } from "./src/services/redux/store/store";
 import { Provider } from "react-redux";
 import Colors from "./src/constants/Colors";
@@ -78,18 +76,14 @@ export default function App() {
     return (
       <Provider store={store}>
         <PrefetchContextProvider>
-          <AuthContextProvider>
-            <AuthDetailsContextProvider>
-              <SafeAreaProvider>
-                <Navigation colorScheme={colorScheme} />
-                <BigdotAlerts />
-                <StatusBar
-                  translucent={false}
-                  backgroundColor={Colors[colorScheme].background}
-                />
-              </SafeAreaProvider>
-            </AuthDetailsContextProvider>
-          </AuthContextProvider>
+          <SafeAreaProvider>
+            <Navigation colorScheme={colorScheme} />
+            <BigdotAlerts />
+            <StatusBar
+              translucent={false}
+              backgroundColor={Colors[colorScheme].background}
+            />
+          </SafeAreaProvider>
         </PrefetchContextProvider>
       </Provider>
     );

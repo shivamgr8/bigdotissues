@@ -20,7 +20,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.v2.bigdot"
     },
     "android": {
@@ -30,7 +29,6 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./google-services.json",
       "permissions": ["android.permission.RECORD_AUDIO"],
       "intentFilters": [
         {
@@ -58,9 +56,7 @@
           "speechRecogntionPermission": "Allow $(PRODUCT_NAME) to securely recognize user speech"
         }
       ],
-      "with-rn-image-crop-picker",
-      "@react-native-firebase/app",
-      "@react-native-firebase/dynamic-links"
+      "with-rn-image-crop-picker"
     ],
     "runtimeVersion": {
       "policy": "appVersion"

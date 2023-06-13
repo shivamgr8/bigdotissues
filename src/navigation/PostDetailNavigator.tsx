@@ -39,26 +39,6 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
-import ModalScreen from "../screens/dummyFolder/ModalScreen";
-import NotFoundScreen from "../screens/notFound/NotFoundScreen";
-import HomeCategoryTabs from "./HomeCategoryTabs";
-import DigestTabsScreen from "../screens/digest/digestTab/DigestTabsScreen";
-import TimeDigestScreen from "../screens/digest/timeDigest/timeDigestScreen/TimeDigestScreen";
-import SearchScreen from "../screens/search/SearchScreen";
-import SettingsScreen from "../screens/settings/settingsScreen/SettingsScreen";
-
-import LoginScreen from "../screens/auth/login/LoginScreen";
-import ForgotPasswordScreen from "../screens/auth/forgotPassword/ForgotPasswordScreen";
-import OtpScreen from "../screens/auth/otp/OtpScreen";
-import CreateAccountScreen from "../screens/auth/createAccount/CreateAccountScreen";
-import AccountScreen from "../screens/auth/userAccount/AccountScreen";
-import UpdateProfileComponent from "../components/staticComponents/UpdateProfileComponent";
-import UpdateEmailAddress from "../screens/auth/userAccount/UpdateEmailAddress";
-import UpdatePhoneNumber from "../components/staticComponents/UpdatePhoneNumber";
-import SetPassword from "../screens/auth/userAccount/SetPassword";
-
 import {
   RootStackParamList,
   RootTabParamList,
@@ -66,7 +46,6 @@ import {
 } from "../../types";
 
 import ImageTabBarIcon from "../components/ImageTabBarIcon";
-import { AuthDetailsContextProvider } from "../hooks/AuthDetailsContext";
 import PostDetailScreen from "../screens/newsPosts/postDetails/PostDetailScreen";
 
 // ================== Auth Stack ===================

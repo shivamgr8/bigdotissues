@@ -6,8 +6,6 @@ import {
 } from "@react-navigation/native";
 import { ColorSchemeName } from "react-native";
 import { getLogin, getUserDetails } from "../utils/utilityFunctions";
-import { AuthContext } from "../hooks/AuthContext";
-import { AuthDetailsContext } from "../hooks/AuthDetailsContext";
 import LinkingConfiguration from "./LinkingConfiguration";
 import LeftDrawer from "../navigation/LeftDrawer";
 import { useDispatch } from "react-redux";
@@ -25,8 +23,6 @@ export default function Navigation({
 }) {
   const dispatch = useDispatch();
   const prefetchContext = useContext(PrefetchContext);
-  const authContext = useContext(AuthContext);
-  const authDetailsContext = useContext(AuthDetailsContext);
 
   useEffect(() => {
     getTextSizes();
@@ -39,15 +35,11 @@ export default function Navigation({
     getLogin().then((tResp) => {
       SelectedSource(tResp);
       console.log("Checking login:" + JSON.stringify(tResp));
-      authContext.setUserData(tResp);
       AppConsolelog("---tResp----", tResp);
       if (tResp && tResp.uid) {
         getUserDetails()
           .then((tResp) => {
             AppConsolelog("---tRespDetails----", tResp);
-            if (tResp && tResp.uid) {
-              authDetailsContext.setUserData(tResp);
-            }
           })
           .catch((error) => {
             AppConsolelog("--getUserDetailsError--", error);
